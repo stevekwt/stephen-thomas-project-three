@@ -1,9 +1,10 @@
 const coSto = {};
 
 coSto.preTaxTotal = 0;
+coSto.postTaxTotal = 0;
 
 coSto.itemsInCart = 0;
-coSto.totalItemPrice = 0;
+
 
 // array items represent: 
 //      supply, 
@@ -34,6 +35,7 @@ coSto.updateNavDisplay = function() {
     // update the current-cart-total-items in NAV
     $('.current-cart-total-items').text(coSto.itemsInCart);
     // update the current-cart-total-cost in NAV TODO
+    $('.current-cart-total-cost').text(`$${coSto.preTaxTotal}`);
 }
 
 coSto.itemAdder = function() {
@@ -48,11 +50,8 @@ coSto.itemAdder = function() {
     coSto.newInventoryNumber = coSto.inventory[coSto.itemName][0];
     // log the new inventory
     console.log(coSto.newInventoryNumber);
-
     // update the items In Cart Variable (ONLY ADDS, not QUANT)
     coSto.itemsInCart += 1;
-
-    coSto.updateNavDisplay();
 }
 
 coSto.itemSubber = function () {
@@ -63,11 +62,8 @@ coSto.itemSubber = function () {
     coSto.newInventoryNumber = coSto.inventory[coSto.itemName][0];
     // log the new inventory
     console.log(coSto.newInventoryNumber);
-
     // update the items In Cart
     coSto.itemsInCart -= 1;
-
-    coSto.updateNavDisplay();
 }
 
 // THIS IS NOT CALLED/ IMPLEMENTED YET BY THE FORM;
@@ -88,15 +84,21 @@ coSto.absoluteQuantUpdate = function(quant) {
 }
 
 coSto.totaler = function() {
+    // resets the total so it's recounted anew each time
+    coSto.preTaxTotal = 0;
+    // add up the total quantity-adjusted price of each purchased item
     for (i in coSto.cart) {
         let quantity = coSto.cart[i]
         let price = coSto.inventory[i][1];
         let totalItemPrice = price * quantity;
         console.log(`i = ${i}, quantity = ${quantity}, totalItemPrice = $${totalItemPrice} (@ $${price}-per-item)`);
         // add each item's quantity-adjusted price to total before tax
-        // this could also be separated into a separate function TODO
         coSto.preTaxTotal += totalItemPrice;
     }
+    // calculate total post tax
+    coSto.postTaxTotal = (coSto.preTaxTotal * 1.14).toFixed(2);
+    // calculate total with shipping
+    coSto.totalWithShipping = (parseFloat(coSto.postTaxTotal) + 10).toFixed(2);
 }
 
 
@@ -106,6 +108,12 @@ coSto.addToCartListener = function() {
         // put button ID into item Name variable
         coSto.itemName = $(this).find('.add-to-cart').attr('id');
         coSto.itemAdder();
+        // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
+        coSto.totaler();
+        // update nav display
+        coSto.updateNavDisplay();
+        // update quantity field TODO
+
         // display the edit quantity box TODO (DONE BUT ENABLE LATER)
         // $('.edit-quantity').css("display", "flex");
         // // hide Add to Cart button
@@ -118,6 +126,10 @@ coSto.minusFormListener = function () {
         // put button ID into item Name variable
         coSto.itemName = $(this).attr('id');
         coSto.itemSubber();
+        // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
+        coSto.totaler();
+        // update nav display
+        coSto.updateNavDisplay();
     });
 };
 coSto.addFormListener = function () {
@@ -126,6 +138,10 @@ coSto.addFormListener = function () {
         // put button ID into item Name variable
         coSto.itemName = $(this).attr('id');
         coSto.itemAdder();
+        // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
+        coSto.totaler();
+        // update nav display
+        coSto.updateNavDisplay();
     });
 };
 coSto.quantityFieldListener = function () {
@@ -136,6 +152,10 @@ coSto.quantityFieldListener = function () {
         console.log(`coSto.itemQty is `, coSto.itemQty);
         coSto.itemName = $(this).find('#quantity').attr('class');
         coSto.itemAdder(coSto.itemQty);
+        // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
+        coSto.totaler();
+        // update nav display
+        coSto.updateNavDisplay();
     });
 };
 
@@ -149,13 +169,15 @@ coSto.checkOutListener = function() {
             let price = coSto.inventory[i][1];
             let totalItemPrice = price * quantity;
             console.log(`i = ${i}, quantity = ${quantity}, totalItemPrice = $${totalItemPrice} (@ $${price}-per-item)`);
-
             $('.cartDisplay').append(`
                 <li>${quantity}</li>
                 <li>${i}</li>
                 <li>$${totalItemPrice}</li>
             `);
         }
+
+        // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
+        coSto.totaler();
 
         // CALCULATE AND PRINT TOTALS -- THESE SHOULD BE SEPARATED so 'current total' can be displayed in nav on the fly TODO
         console.log(coSto.preTaxTotal);
@@ -164,16 +186,12 @@ coSto.checkOutListener = function() {
             <li>Total: </li>
             <li>$${coSto.preTaxTotal}</li>
         `);
-        // calculate total post tax
-        coSto.postTaxTotal = (coSto.preTaxTotal * 1.14).toFixed(2);
         // print total post tax
         $('.totalsSection').append(`
             <li></li>
             <li>Total with tax: </li>
             <li>$${coSto.postTaxTotal}</li>
         `);
-        // calculate total with shipping
-        coSto.totalWithShipping = (parseFloat(coSto.postTaxTotal) + 10).toFixed(2);
         // print total with shipping
         $('.totalsSection').append(`
             <li></li>
