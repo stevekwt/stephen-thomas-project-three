@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The COVID Store</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="https://kit.fontawesome.com/748771d4d7.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <header>
+
+        <nav class="wrapper">
+            <div class="logo">
+                <img src="./assets/coronavirus-transp.png" alt="the coronavirus molecule">
+                The COVID Store
+            </div>
+            <div class="invent-display">
+                <ul>
+                    <li>
+                        <img src="./assets/medical-mask-white.png" alt="edit of an icon by https://www.flaticon.com/authors/freepik">
+                         <span class="mask">100</span>
+                    </li>
+                    <li>
+                        <img src="./assets/hand-sanitizer-white.png" alt="edit of an icon by https://www.flaticon.com/authors/freepik">
+                         <span class="sani">1000</span>
+                    </li>
+                    <li>
+                        <img src="./assets/toilet-paper-solid-white.png" alt="edit of an icon by https://www.flaticon.com/authors/freepik">
+                        <span class="tp">500</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="cart-box">
+                <span class="current-cart-total-items"></span>
+                <i class="fas fa-shopping-cart"></i>
+                Your current total is:
+                <span class="current-cart-total-cost"></span>
+            </div>
+        </nav>
+
+    </header>
+
+    <main class="wrapper">
+        <section class="store">
+
+            <h1>The COVID Store</h1>
+
+            <h2>All You Need For *~These Unprecedented Times~*</h2>
+
+            <ul class="item-display">
+
+                <li class="mask">
+                    <img src="./assets/bara-buri-1NPbmHxl_VE-unsplash.jpg" alt="" title="Photo by Bára Buri on Unsplash"></a>
+                    <div class="item-desc">Mask</div>
+                    <p>$10</p>
+
+                    <!-- FORMS START  -->
+                    <form action="" class="order-form">
+                        <select>
+                            <option value="mask" selected></option>
+                        </select>
+                        <button class="add-to-cart" type="submit" id="mask">Add to cart</button>
+                    </form>
+
+                    <ul class="edit-quantity">
+                        <li>
+                            <form action="" class="minus-form">
+                                <button class="subtract" id="mask"> – </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="" class="quantity-form">
+                                <label for="quantity" class="sr-only">Quantity</label>
+                                <input type="text" name="quantity" placeholder="1" class="mask"  id="quantity" value="1">
+                            </form>
+                        </li>
+                        <li>
+                            <form action="" class="addition-form">
+                                <button class="add" id="mask"> + </button>
+                            </form>
+                        </li>
+                    </ul>
+                    
+                    <!-- FORM END  -->
+
+                </li>
+
+                <li class="sani">
+                    <img src="./assets/pexels-katie-harp-4998548-cropped.jpg" alt="" title="Photo by Katie Harp from Pexels">
+                    <div class="item-desc">Hand Sanitizer</div>
+                    <p>$8</p>
+
+                    <!-- FORM START  -->
+                    <form action="" class="order-form">
+                        <select>
+                            <option value="sani" selected></option>
+                        </select>
+                        <button class="add-to-cart" type="submit" id="sani">Add to cart</button>
+                    </form>
+                
+                    <ul class="edit-quantity">
+                        <li>
+                            <form action="" class="minus-form">
+                                <button class="subtract" id="sani"> – </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="" class="quantity-form" id="sani">
+                                <label for="quantity" class="sr-only">Quantity</label>
+                                <input type="text" name="quantity" placeholder="1" class="sani"  id="quantity" value="1">
+                            </form>
+                        </li>
+                        <li>
+                            <form action="" class="addition-form">
+                                <button class="add" id="sani"> + </button>
+                            </form>
+                        </li>
+                    </ul>
+                
+                    </form>
+                    <!-- FORM END  -->
+                </li>
+
+                <li class="tp">
+                    <img src="./assets/pexels-vie-studio-3963080-cropped.jpg" alt="" title="Photo by Vie Studio from Pexels">
+                    <div class="item-desc">Toilet Paper</div>
+                    <p>$3</p>
+
+                    <!-- FORMS START  -->
+                    <form action="" class="order-form">
+                        <select>
+                            <option value="tp" selected></option>
+                        </select>
+                        <button class="add-to-cart" type="submit" id="tp">Add to cart</button>
+                    </form>
+                    
+                    <ul class="edit-quantity">
+                        <li>
+                            <form action="" class="minus-form">
+                                <button class="subtract" id="tp"> – </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="" class="quantity-form">
+                                <label for="quantity" class="sr-only">Quantity</label>
+                                <input type="text" name="quantity" placeholder="1" class="tp"
+                                id="quantity" value="1">
+                            </form>
+                        </li>
+                        <li>
+                            <form action="" class="addition-form">
+                                <button class="add" id="tp"> + </button>
+                            </form>
+                        </li>
+                    </ul>
+                    
+                    </form>
+                    <!-- FORM END  -->
+                </li>
+                
+            </ul>
+
+            <button class="check-out forward-flow">Check Out</button>
+
+        </section>
+
+        <section class="checkout">
+
+            <h2>Checkout</h2>
+
+            <div class="checkout-box">
+
+                <div class="cart">
+
+                    <div class="order-table">
+                        <ul class="table-headings">
+                            <li class="qty-col"><label for="qty">Qty.</label></li>
+                            <li class="item-col-top">Item</li>
+                            <li class="price-col">Price</li>
+                        </ul>
+                        <ul class="cartDisplay"></ul>
+                        <ul class="totalsSection"></ul>
+                    </div>
+
+                    <button class="edit-order">Edit Order</button>
+
+                </div>
+
+                <div class="order-info">
+
+                    <figure class="address">
+                        <h3>Address</h3>
+                        <p>123 Some St</p>
+                        <button class="address">Change</button>
+                    </figure>
+
+                    <figure class="credit-card">
+                        <h3>Credit Card</h3>
+                        <p>Ends with 1234</p>
+                        <button class="credit">Change</button>
+                    </figure>
+
+                    <button class="confirm-order forward-flow">Confirm Order</button>
+
+                </div>
+
+            </div>
+
+        </section>
+    </main>
+</body>
+</html>

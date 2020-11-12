@@ -1,0 +1,190 @@
+
+body {
+    font-family: $text-font;
+}
+
+h1 {
+    margin-bottom: 0;
+    padding: 10px;
+    font-family: $title-font;
+}
+h2 {
+    margin-top: 0;
+    padding: 10px;
+    font-family: $text-font;
+}
+
+.wrapper {
+    width: 95%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+button.forward-flow {
+        margin: 15px;
+        background-color: $secondary-accent;
+        border: 1px solid $lining;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+
+// nav styles
+
+header {
+    background-color: $rich-black-fogra-29;
+    nav {
+        display: flex;
+        justify-content: space-between;
+        background-color: $rich-black-fogra-29;
+        color: white;
+        padding: 15px;
+        .logo {
+            display: grid;
+            place-items: center;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            img {
+                height: 48px;
+            }
+        }
+        .cart-box .fa-shopping-cart {
+                margin-right: 15px;
+            }
+        .invent-display ul {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            li {
+                padding: 0 10px;
+                img {
+                    height: 14px;
+                }
+                .supply {
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
+
+
+// store styles
+
+.store {
+    background-color: $baby-powder;
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+    ul.item-display {
+        display: flex;
+        justify-content: space-evenly;
+        list-style: none;
+        text-align: center;
+        margin: 0 auto;
+        padding: 10px 0;
+        p {
+            margin: 0;
+        }
+        li .item-desc {
+            padding: 10px;
+        }
+        li img {
+            height: 220px;
+            box-shadow: 6px 6px $primary-accent;
+        }
+        form button.add-to-cart {
+            margin: 15px;
+            background-color: $primary-accent;
+            color: $baby-powder;
+            border: 1px solid $lining;
+            padding: 10px 20px;
+            border-radius: 5px;
+            width: 170px;
+        }
+    }
+}
+
+ul.edit-quantity {
+    display: flex;
+    padding-left: 0;
+    justify-content: space-between;
+    list-style: none;
+    text-align: center;
+    width: 170px;
+    // border: 1px solid #000;
+    margin: 0 auto;
+    // display: none;
+    #quantity {
+        width: 35px;
+        height: 100%;
+        border-radius: 5px;
+        text-align: center;
+    }
+}
+
+button.subtract {
+    // background-color: rgb(204, 200, 200);
+    background-color: $very-light-gray;
+};
+button.add {
+    background-color: $primary-accent;
+    color: $baby-powder;
+};
+
+button.subtract,
+button.add {
+    // margin: 15px;
+    border: 1px solid $lining;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+// .store ul li:first-of-type img,
+// .store ul li:last-of-type img, {
+//     height: 150px;
+// }
+// .store ul li:nth-of-type(2) img {
+//     height: 250px;
+// }
+
+select {
+    display: none;
+}
+
+// checkout styles
+
+.checkout {
+    background-color: $baby-powder;
+    height: 0;
+    overflow: hidden;
+    .checkout-box {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        column-gap: 5vw;
+        .order-table {
+            // box-shadow: 1px 1px 1px $rich-black-fogra-29;
+            background-color: $very-very-light-gray;
+            padding: 1px;
+            ul {
+                display: grid;
+                grid-template-columns: 1fr 4fr 1fr;
+                list-style: none;
+                // border: 1px solid black;
+            }
+        }
+        button.edit-order {
+            margin: 15px 4px;
+            background-color: $tertiary-accent;
+            border: 1px solid $lining;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        .order-info button.address, 
+        .order-info button.credit {
+            margin: 15px;
+            background-color: $very-light-gray;
+            border: 1px solid $lining;
+            padding: 1px 7px;
+            border-radius: 5px;
+        }
+    }
+}
