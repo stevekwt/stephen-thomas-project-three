@@ -38,6 +38,11 @@ coSto.updateNavDisplay = function() {
     $('.current-cart-total-cost').text(`$${coSto.preTaxTotal}`);
 }
 
+coSto.updateQuantityField = function() {
+    let quantSelect = `input.${coSto.itemName}`;
+    $(quantSelect).val(coSto.cart[coSto.itemName]);
+}
+
 coSto.itemAdder = function() {
     // ADDS TO the cart object according to quantity (only good for 'Add to cart' & '+' -- not 'quantity field')
     if (coSto.cart[coSto.itemName]) {
@@ -106,13 +111,15 @@ coSto.addToCartListener = function() {
     $('.order-form').on('click', function (e) {
         e.preventDefault();
         // put button ID into item Name variable
-        coSto.itemName = $(this).find('.add-to-cart').attr('id');
+        coSto.itemName = $(this).find('.add-to-cart').val();
         coSto.itemAdder();
-        // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
+        // CALL TOTALER FUNCTION 
         coSto.totaler();
         // update nav display
         coSto.updateNavDisplay();
-        // update quantity field TODO
+
+        // update quantity field
+        coSto.updateQuantityField();
 
         // display the edit quantity box TODO (DONE BUT ENABLE LATER)
         // $('.edit-quantity').css("display", "flex");
@@ -124,24 +131,28 @@ coSto.minusFormListener = function () {
     $('.subtract').on('click', function (e) {
         e.preventDefault();
         // put button ID into item Name variable
-        coSto.itemName = $(this).attr('id');
+        coSto.itemName = $(this).val();
         coSto.itemSubber();
         // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
         coSto.totaler();
         // update nav display
         coSto.updateNavDisplay();
+        // update quantity field
+        coSto.updateQuantityField();
     });
 };
 coSto.addFormListener = function () {
     $('.add').on('click', function (e) {
         e.preventDefault();
         // put button ID into item Name variable
-        coSto.itemName = $(this).attr('id');
+        coSto.itemName = $(this).val();
         coSto.itemAdder();
         // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
         coSto.totaler();
         // update nav display
         coSto.updateNavDisplay();
+        // update quantity field
+        coSto.updateQuantityField();
     });
 };
 coSto.quantityFieldListener = function () {
