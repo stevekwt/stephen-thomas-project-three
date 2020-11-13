@@ -369,7 +369,7 @@ ul.edit-quantity {
   display: -ms-flexbox;
   display: flex;
   padding-left: 0;
-  margin: 15 auto;
+  margin: 15px auto;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;

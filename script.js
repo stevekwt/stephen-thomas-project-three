@@ -14,17 +14,20 @@ coSto.inventory = {
     mask: [
         100,
         10,
-        100
+        100,
+        "Face mask"
     ],
     tp: [
         500,
         8,
-        500
+        500,
+        "Toilet Paper Roll"
     ],
     sani: [
         1000,
         3,
-        1000
+        1000,
+        "Hand Sanitizer"
     ]
 };
 
@@ -110,7 +113,8 @@ coSto.totaler = function() {
     }
 
     // undo button display change if items in cart drops back below 1 
-    if (coSto.itemsInCart < 1) {
+    // if (coSto.itemsInCart < 1) {
+    if (coSto.cart[coSto.itemName] < 1) {
         // hide quantity box
         let qtyBoxToChange = `.edit-quantity.${coSto.itemName}`;
         $(qtyBoxToChange).css("display", "none");
@@ -132,14 +136,8 @@ coSto.addToCartListener = function() {
         coSto.totaler();
         // update nav display
         coSto.updateNavDisplay();
-
         // update quantity field
         coSto.updateQuantityField();
-
-        // display the edit quantity box TODO (DONE BUT ENABLE LATER)
-        // $('.edit-quantity').css("display", "flex");
-        // // hide Add to Cart button
-        // $('.order-form').css("display", "none");
 
         // display quantity box
         let qtyBoxToChange = `.edit-quantity.${coSto.itemName}`;
@@ -147,10 +145,6 @@ coSto.addToCartListener = function() {
         // hide the 'Add to Cart' button
         let addToCartButtonToChange = `.order-form.${coSto.itemName}`;
         $(addToCartButtonToChange).css("display", "none");
-
-
-
-
     });
 };
 coSto.minusFormListener = function () {
@@ -208,11 +202,13 @@ coSto.checkOutListener = function() {
             let price = coSto.inventory[i][1];
             let totalItemPrice = price * quantity;
             console.log(`i = ${i}, quantity = ${quantity}, totalItemPrice = $${totalItemPrice} (@ $${price}-per-item)`);
-            $('.cartDisplay').append(`
-                <li>${quantity}</li>
-                <li>${i}</li>
-                <li>$${totalItemPrice}</li>
-            `);
+            if (quantity > 0) {
+                $('.cartDisplay').append(`
+                    <li>${quantity}</li>
+                    <li>${coSto.inventory[i][3]}</li>
+                    <li>$${totalItemPrice}</li>
+                `);
+            }
         }
 
         // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
