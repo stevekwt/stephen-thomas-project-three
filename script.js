@@ -8,7 +8,9 @@ coSto.itemsInCart = 0;
 
 // array items represent: 
 //      supply, 
-//      price
+//      price,
+//      baseline supply (doesn't change, used to recalculate totals)
+//      full name
 // change the arrays to objs to their properties can be called by their names instead of array locations TODO
 coSto.inventory = {
     mask: [
@@ -35,7 +37,7 @@ coSto.cart = {};
 
 coSto.updateNavDisplay = function() {
     // update the individual inventory in NAV
-    coSto.spanToChange = `span.${coSto.itemName}`;
+    coSto.spanToChange = `span.${coSto.selectedItemName}`;
     console.log(`coSto.spanToChange is`, coSto.spanToChange);
     $(coSto.spanToChange).text(`${coSto.newInventoryNumber}`);
     // update the current-cart-total-items in NAV
@@ -45,32 +47,30 @@ coSto.updateNavDisplay = function() {
 }
 
 coSto.updateQuantityField = function() {
-    let quantSelect = `input.${coSto.itemName}`;
-    $(quantSelect).val(coSto.cart[coSto.itemName]);
+    let quantSelect = `input.${coSto.selectedItemName}`;
+    $(quantSelect).val(coSto.cart[coSto.selectedItemName]);
 }
 
 coSto.itemAdder = function() {
     // ADDS TO the cart object according to quantity (only good for 'Add to cart' & '+' -- not 'quantity field')
-    if (coSto.cart[coSto.itemName]) {
-        coSto.cart[coSto.itemName] += 1;
+    if (coSto.cart[coSto.selectedItemName]) {
+        coSto.cart[coSto.selectedItemName] += 1;
     } else {
-        coSto.cart[coSto.itemName] = 1;
+        coSto.cart[coSto.selectedItemName] = 1;
     }
     // change the inventory object according to quantity (only good for 'Add to cart' & '+', not 'quantity field')
-    coSto.inventory[coSto.itemName][0] -= 1;
-    coSto.newInventoryNumber = coSto.inventory[coSto.itemName][0];
+    coSto.inventory[coSto.selectedItemName][0] -= 1;
+    coSto.newInventoryNumber = coSto.inventory[coSto.selectedItemName][0];
     // log the new inventory
     console.log(coSto.newInventoryNumber);
-    // update the items In Cart Variable (ONLY ADDS, not QUANT)
-    // coSto.itemsInCart += 1;
 }
 
 coSto.itemSubber = function () {
     // subtract 1 from cart
-    coSto.cart[coSto.itemName] -= 1;
+    coSto.cart[coSto.selectedItemName] -= 1;
     // change the inventory
-    coSto.inventory[coSto.itemName][0] += 1;
-    coSto.newInventoryNumber = coSto.inventory[coSto.itemName][0];
+    coSto.inventory[coSto.selectedItemName][0] += 1;
+    coSto.newInventoryNumber = coSto.inventory[coSto.selectedItemName][0];
     // log the new inventory
     console.log(coSto.newInventoryNumber);
 }
@@ -79,13 +79,15 @@ coSto.absoluteQuantUpdate = function(quant) {
     console.log({quant});
     // if quan-t is a non-number, change to 1
     // probably dont want this actually lol TODO
-    if (isNaN(quant) === false && quant !== '') { 
+    if (isNaN(quant) === false && quant !== '' && quant > 0) { 
         // CHANGE CART INFO
-        coSto.cart[coSto.itemName] = coSto.itemQty;
+        coSto.cart[coSto.selectedItemName] = coSto.itemQty;
         // CHANGE INVENTORY INFO by referencing its initial value which never change (item 2 in array)
-        coSto.inventory[coSto.itemName][0] = coSto.inventory[coSto.itemName][2] - coSto.itemQty;
+        coSto.inventory[coSto.selectedItemName][0] = coSto.inventory[coSto.selectedItemName][2] - coSto.itemQty;
         // update inventory
-        coSto.newInventoryNumber = coSto.inventory[coSto.itemName][0];
+        coSto.newInventoryNumber = coSto.inventory[coSto.selectedItemName][0];
+    } else {
+        coSto.updateQuantityField();
     };
 }
 
@@ -114,13 +116,13 @@ coSto.totaler = function() {
 
     // undo button display change if items in cart drops back below 1 
     // if (coSto.itemsInCart < 1) {
-    if (coSto.cart[coSto.itemName] < 1) {
+    if (coSto.cart[coSto.selectedItemName] < 1) {
         // hide quantity box
-        let qtyBoxToChange = `.edit-quantity.${coSto.itemName}`;
+        let qtyBoxToChange = `.edit-quantity.${coSto.selectedItemName}`;
         $(qtyBoxToChange).css("display", "none");
         // re-display the 'Add to Cart' button
-        let addToCartButtonToChange = `.order-form.${coSto.itemName}`;
-        $(addToCartButtonToChange).css("display", "flex");
+        let addToCartButtonToChange = `.order-form.${coSto.selectedItemName}`;
+        $(addToCartButtonToChange).css("display", "block");
     }
 
 }
@@ -130,7 +132,7 @@ coSto.addToCartListener = function() {
     $('.order-form').on('click', function (e) {
         e.preventDefault();
         // put button ID into item Name variable
-        coSto.itemName = $(this).find('.add-to-cart').val();
+        coSto.selectedItemName = $(this).find('.add-to-cart').val();
         coSto.itemAdder();
         // CALL TOTALER FUNCTION 
         coSto.totaler();
@@ -140,10 +142,10 @@ coSto.addToCartListener = function() {
         coSto.updateQuantityField();
 
         // display quantity box
-        let qtyBoxToChange = `.edit-quantity.${coSto.itemName}`;
+        let qtyBoxToChange = `.edit-quantity.${coSto.selectedItemName}`;
         $(qtyBoxToChange).css("display", "flex");
         // hide the 'Add to Cart' button
-        let addToCartButtonToChange = `.order-form.${coSto.itemName}`;
+        let addToCartButtonToChange = `.order-form.${coSto.selectedItemName}`;
         $(addToCartButtonToChange).css("display", "none");
     });
 };
@@ -151,7 +153,7 @@ coSto.minusFormListener = function () {
     $('.subtract').on('click', function (e) {
         e.preventDefault();
         // put button ID into item Name variable
-        coSto.itemName = $(this).val();
+        coSto.selectedItemName = $(this).val();
         coSto.itemSubber();
         // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
         coSto.totaler();
@@ -165,7 +167,7 @@ coSto.addFormListener = function () {
     $('.add').on('click', function (e) {
         e.preventDefault();
         // put button ID into item Name variable
-        coSto.itemName = $(this).val();
+        coSto.selectedItemName = $(this).val();
         coSto.itemAdder();
         // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
         coSto.totaler();
@@ -181,7 +183,7 @@ coSto.quantityFieldListener = function () {
         // put quantity from text field into item Qty variable TODO
         coSto.itemQty = parseInt($(this).find('#quantity').val());
         console.log(`coSto.itemQty is `, coSto.itemQty);
-        coSto.itemName = $(this).find('#quantity').attr('class');
+        coSto.selectedItemName = $(this).find('#quantity').attr('class');
         coSto.absoluteQuantUpdate(coSto.itemQty);
         // log the new inventory
         console.log(coSto.newInventoryNumber);
