@@ -13,15 +13,18 @@ coSto.itemsInCart = 0;
 coSto.inventory = {
     mask: [
         100,
-        10
+        10,
+        100
     ],
     tp: [
         500,
-        8
+        8,
+        500
     ],
     sani: [
         1000,
-        3
+        3,
+        1000
     ]
 };
 
@@ -56,7 +59,7 @@ coSto.itemAdder = function() {
     // log the new inventory
     console.log(coSto.newInventoryNumber);
     // update the items In Cart Variable (ONLY ADDS, not QUANT)
-    coSto.itemsInCart += 1;
+    // coSto.itemsInCart += 1;
 }
 
 coSto.itemSubber = function () {
@@ -68,7 +71,7 @@ coSto.itemSubber = function () {
     // log the new inventory
     console.log(coSto.newInventoryNumber);
     // update the items In Cart
-    coSto.itemsInCart -= 1;
+    // coSto.itemsInCart -= 1;
 }
 
 // THIS IS NOT CALLED/ IMPLEMENTED YET BY THE FORM;
@@ -89,8 +92,9 @@ coSto.absoluteQuantUpdate = function(quant) {
 }
 
 coSto.totaler = function() {
-    // resets the total so it's recounted anew each time
+    // resets totals so they're recounted anew each time (necessary b/c of how the quant form is able to override all previously-entered values)
     coSto.preTaxTotal = 0;
+    coSto.itemsInCart = 0;
     // add up the total quantity-adjusted price of each purchased item
     for (i in coSto.cart) {
         let quantity = coSto.cart[i]
@@ -99,6 +103,8 @@ coSto.totaler = function() {
         console.log(`i = ${i}, quantity = ${quantity}, totalItemPrice = $${totalItemPrice} (@ $${price}-per-item)`);
         // add each item's quantity-adjusted price to total before tax
         coSto.preTaxTotal += totalItemPrice;
+        // add up the total items in cart
+        coSto.itemsInCart += quantity;
     }
     // calculate total post tax
     coSto.postTaxTotal = (coSto.preTaxTotal * 1.14).toFixed(2);
@@ -162,7 +168,17 @@ coSto.quantityFieldListener = function () {
         coSto.itemQty = parseInt($(this).find('#quantity').val());
         console.log(`coSto.itemQty is `, coSto.itemQty);
         coSto.itemName = $(this).find('#quantity').attr('class');
-        coSto.itemAdder(coSto.itemQty);
+        // DONT WANT ADDER -v- TODO
+        // coSto.itemAdder(coSto.itemQty);
+        // NEW: CHANGE CART INFO
+        coSto.cart[coSto.itemName] = coSto.itemQty;
+        // NEW: CHANGE INVENTORY INFO by referencing its initial value which never change (item 2 in array)
+        coSto.inventory[coSto.itemName][0] = coSto.inventory[coSto.itemName][2] - coSto.itemQty;
+
+        coSto.newInventoryNumber = coSto.inventory[coSto.itemName][0];
+        // log the new inventory
+        console.log(coSto.newInventoryNumber);
+
         // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
         coSto.totaler();
         // update nav display
