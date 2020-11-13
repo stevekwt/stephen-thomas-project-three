@@ -356,10 +356,10 @@ header nav .invent-display ul li .supply {
 
 .store ul.item-display form button.add-to-cart {
   margin: 15px;
+  padding: 10px 20px;
   background-color: #e71d36;
   color: #fdfffc;
   border: 1px solid #adabab;
-  padding: 10px 20px;
   border-radius: 5px;
   width: 170px;
 }
@@ -369,18 +369,19 @@ ul.edit-quantity {
   display: -ms-flexbox;
   display: flex;
   padding-left: 0;
+  margin: 15 auto;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
   list-style: none;
   text-align: center;
   width: 170px;
-  margin: 0 auto;
+  display: none;
 }
 
 ul.edit-quantity #quantity {
   width: 35px;
-  height: 100%;
+  height: 40px;
   border-radius: 5px;
   text-align: center;
 }

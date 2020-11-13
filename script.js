@@ -70,25 +70,20 @@ coSto.itemSubber = function () {
     coSto.newInventoryNumber = coSto.inventory[coSto.itemName][0];
     // log the new inventory
     console.log(coSto.newInventoryNumber);
-    // update the items In Cart
-    // coSto.itemsInCart -= 1;
 }
 
-// THIS IS NOT CALLED/ IMPLEMENTED YET BY THE FORM;
-// OLD (ADDITIVE) METHOD IS STILL OPERATIONAL
 coSto.absoluteQuantUpdate = function(quant) {
     console.log({quant});
     // if quan-t is a non-number, change to 1
     // probably dont want this actually lol TODO
-    // if (isNaN(quant) === true || quant === '') { quant = 1; };
-    // console.log(`quant post if is`, quant);
-    // UPDATE CART VARIABLE
-    coSto.cart[coSto.itemName] = quant;
-    // change the inventory
-    coSto.inventory[coSto.itemName][0] = coSto.inventory[coSto.itemName][0] - quant;
-    // update the items In Cart
-    // CAN'T BE: coSto.itemsInCart -= 1;
-    // HAS TO BE DONE IN A MORE ABSOLUTE WAY, ACTUALLY ADDING UP FROM THE coSto.cart OBJECT ITSELF VIA LOOPING TODO
+    if (isNaN(quant) === false && quant !== '') { 
+        // CHANGE CART INFO
+        coSto.cart[coSto.itemName] = coSto.itemQty;
+        // CHANGE INVENTORY INFO by referencing its initial value which never change (item 2 in array)
+        coSto.inventory[coSto.itemName][0] = coSto.inventory[coSto.itemName][2] - coSto.itemQty;
+        // update inventory
+        coSto.newInventoryNumber = coSto.inventory[coSto.itemName][0];
+    };
 }
 
 coSto.totaler = function() {
@@ -109,7 +104,21 @@ coSto.totaler = function() {
     // calculate total post tax
     coSto.postTaxTotal = (coSto.preTaxTotal * 1.14).toFixed(2);
     // calculate total with shipping
-    coSto.totalWithShipping = (parseFloat(coSto.postTaxTotal) + 10).toFixed(2);
+    coSto.totalWithShipping = "0.00";
+    if (coSto.postTaxTotal > 0) {
+        coSto.totalWithShipping = (parseFloat(coSto.postTaxTotal) + 10).toFixed(2);
+    }
+
+    // undo button display change if items in cart drops back below 1 
+    if (coSto.itemsInCart < 1) {
+        // hide quantity box
+        let qtyBoxToChange = `.edit-quantity.${coSto.itemName}`;
+        $(qtyBoxToChange).css("display", "none");
+        // re-display the 'Add to Cart' button
+        let addToCartButtonToChange = `.order-form.${coSto.itemName}`;
+        $(addToCartButtonToChange).css("display", "flex");
+    }
+
 }
 
 
@@ -131,6 +140,17 @@ coSto.addToCartListener = function() {
         // $('.edit-quantity').css("display", "flex");
         // // hide Add to Cart button
         // $('.order-form').css("display", "none");
+
+        // display quantity box
+        let qtyBoxToChange = `.edit-quantity.${coSto.itemName}`;
+        $(qtyBoxToChange).css("display", "flex");
+        // hide the 'Add to Cart' button
+        let addToCartButtonToChange = `.order-form.${coSto.itemName}`;
+        $(addToCartButtonToChange).css("display", "none");
+
+
+
+
     });
 };
 coSto.minusFormListener = function () {
@@ -168,17 +188,9 @@ coSto.quantityFieldListener = function () {
         coSto.itemQty = parseInt($(this).find('#quantity').val());
         console.log(`coSto.itemQty is `, coSto.itemQty);
         coSto.itemName = $(this).find('#quantity').attr('class');
-        // DONT WANT ADDER -v- TODO
-        // coSto.itemAdder(coSto.itemQty);
-        // NEW: CHANGE CART INFO
-        coSto.cart[coSto.itemName] = coSto.itemQty;
-        // NEW: CHANGE INVENTORY INFO by referencing its initial value which never change (item 2 in array)
-        coSto.inventory[coSto.itemName][0] = coSto.inventory[coSto.itemName][2] - coSto.itemQty;
-
-        coSto.newInventoryNumber = coSto.inventory[coSto.itemName][0];
+        coSto.absoluteQuantUpdate(coSto.itemQty);
         // log the new inventory
         console.log(coSto.newInventoryNumber);
-
         // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
         coSto.totaler();
         // update nav display
