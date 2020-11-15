@@ -267,6 +267,10 @@ button.forward-flow {
 
 header {
   background-color: #011627;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: 100%;
 }
 
 header nav {
@@ -332,7 +336,6 @@ header nav .invent-display ul li .supply {
 
 .store {
   background-color: #fdfffc;
-  height: 100vh;
   overflow: hidden;
   text-align: center;
 }

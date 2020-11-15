@@ -1,4 +1,3 @@
-
 body {
     font-family: $text-font;
 }
@@ -31,6 +30,10 @@ button.forward-flow {
 
 header {
     background-color: $rich-black-fogra-29;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    // position: relative;
     nav {
         display: flex;
         justify-content: space-between;
@@ -78,10 +81,13 @@ header {
 // store styles
 
 .store {
+    // position: absolute;
+    // top: 1;
     background-color: $baby-powder;
-    height: 100vh;
+    // height: auto;
     overflow: hidden;
     text-align: center;
+    // margin-top: 85px;
     h2 {
         margin-top: 0;
     }
