@@ -237,8 +237,13 @@ coSto.checkOutListener = function() {
         `);
 
         // animate/navigate to checkout section
-        $('.store').animate({ height: '0' }, 50);
-        $('.checkout').animate({ height: '100%' }, 50);
+        $('.store').animate({ height: '0' }, 0);
+        $('.checkout').animate({ height: '100%' }, 0);
+
+
+        $('body').animate({
+            scrollTop: $(".checkout").offset().top
+        }, 0);
 
     });
 }
@@ -252,8 +257,12 @@ coSto.editOrderListener = function () {
 
         console.log(`Edit Order button pressed`);
         // animate/navigate back to store section
-        $('.store').animate({ height: '120%' }, 50);
-        $('.checkout').animate({ height: '0' }, 50);
+        $('.store').animate({ height: '120%' }, 0);
+        $('.checkout').animate({ height: '0' }, 0);
+
+        $('body').animate({
+            scrollTop: $(".store").offset().top
+        }, 0);
     });
 }
 
