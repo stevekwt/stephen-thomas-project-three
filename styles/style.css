@@ -251,6 +251,10 @@ h2 {
   font-family: "Roboto", sans-serif;
 }
 
+h3 {
+  margin-top: 0;
+}
+
 .wrapper {
   width: 95%;
   max-width: 1000px;
@@ -288,10 +292,9 @@ header nav {
 header nav .logo {
   display: -ms-grid;
   display: grid;
-  place-items: center;
+  place-items: center start;
   -ms-grid-columns: (minmax(50px, 1fr))[auto-fill];
       grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-  margin-left: -12px;
 }
 
 header nav .logo img {
@@ -432,12 +435,13 @@ select {
 }
 
 .checkout .checkout-box {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: 2fr 1fr;
-      grid-template-columns: 2fr 1fr;
-  -webkit-column-gap: 5vw;
-          column-gap: 5vw;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
 }
 
 .checkout .checkout-box .order-table {
@@ -448,9 +452,11 @@ select {
 .checkout .checkout-box .order-table ul {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: 1fr 4fr 1fr;
-      grid-template-columns: 1fr 4fr 1fr;
+  -ms-grid-columns: 2fr 22fr 3fr;
+      grid-template-columns: 2fr 22fr 3fr;
   list-style: none;
+  padding: 10px;
+  margin: 10px;
 }
 
 .checkout .checkout-box button.edit-order {
@@ -461,15 +467,39 @@ select {
   border-radius: 5px;
 }
 
+.checkout .checkout-box .order-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.checkout .checkout-box .editable-info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
 .checkout .checkout-box .order-info figure {
   border: 3px dashed #e0dfdf;
-  padding: 20px;
-  margin: 0 0 16px 0;
+  padding: 32px;
+  margin: 0 0 0 16px;
+  width: 200px;
+}
+
+.checkout .checkout-box figure.address p {
+  margin: 0;
 }
 
 .checkout .checkout-box .order-info button.address,
 .checkout .checkout-box .order-info button.credit {
-  margin: 15px;
+  margin: 30px 0px 0px;
   background-color: #e0dfdf;
   border: 1px solid #adabab;
   padding: 1px 7px;
@@ -477,5 +507,27 @@ select {
 }
 
 .checkout .checkout-box .order-info button.confirm-order {
-  margin-left: 37px;
+  margin-left: 27px;
+  width: 145px;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+@media (max-width: 800px) {
+  .checkout .checkout-box {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .checkout .checkout-box .order-info {
+    -webkit-box-pack: right;
+        -ms-flex-pack: right;
+            justify-content: right;
+  }
+  .checkout .checkout-box .order-info button.confirm-order {
+    -ms-flex-item-align: center;
+        -ms-grid-row-align: center;
+        align-self: center;
+  }
 }

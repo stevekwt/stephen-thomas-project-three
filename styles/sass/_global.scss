@@ -11,6 +11,9 @@ h2 {
     padding: 10px;
     font-family: $text-font;
 }
+h3 {
+    margin-top: 0;
+}
 
 .wrapper {
     width: 95%;
@@ -42,9 +45,9 @@ header {
         padding: 15px 0;
         .logo {
             display: grid;
-            place-items: center;
+            place-items: center start;
             grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-            margin-left: -12px;
+            // margin-left: -12px;
             img {
                 height: 48px;
             }
@@ -182,17 +185,22 @@ select {
     height: 0;
     overflow: hidden;
     .checkout-box {
-        display: grid;
-        grid-template-columns: 2fr 1fr;
-        column-gap: 5vw;
+        // display: grid;
+        // grid-template-columns: 2fr 1fr;
+        // column-gap: 5vw;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
         .order-table {
             // box-shadow: 1px 1px 1px $rich-black-fogra-29;
             background-color: $very-very-light-gray;
             padding: 1px;
             ul {
                 display: grid;
-                grid-template-columns: 1fr 4fr 1fr;
+                grid-template-columns: 2fr 22fr 3fr;
                 list-style: none;
+                padding: 10px;
+                margin: 10px;
                 // border: 1px solid black;
             }
         }
@@ -203,22 +211,54 @@ select {
             padding: 10px 20px;
             border-radius: 5px;
         }
+        .order-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .editable-info {
+            display: flex;
+            justify-content: space-evenly;
+        }
         .order-info figure {
             border: 3px dashed $very-light-gray;
             // box-shadow: 1px 1px 1px $rich-black-fogra-29;
-            padding: 20px;
-            margin: 0 0 16px 0;
+            padding: 32px;
+            margin: 0 0 0 16px;
+            width: 200px;
         }
+        figure.address p {
+            margin: 0;
+        }
+        // figure.address p:last-of-type {
+        //     margin-bottom: 16px;
+        // }
         .order-info button.address, 
         .order-info button.credit {
-            margin: 15px;
+            margin: 30px 0px 0px;
             background-color: $very-light-gray;
             border: 1px solid $lining;
             padding: 1px 7px;
             border-radius: 5px;
         }
         .order-info button.confirm-order {
-            margin-left: 37px;
+            margin-left: 27px;
+            width: 145px;
+            align-self: flex-end;
+        }
+    }
+}
+
+
+@media (max-width: 800px) {
+    .checkout {
+        .checkout-box {
+            flex-direction: column;
+            .order-info {
+                justify-content: right;
+                button.confirm-order {
+                    align-self: center;
+                }
+            }
         }
     }
 }
