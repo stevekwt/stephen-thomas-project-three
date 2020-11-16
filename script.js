@@ -1,17 +1,14 @@
 const coSto = {};
-
 coSto.preTaxTotal = 0;
 coSto.postTaxTotal = 0;
-
 coSto.itemsInCart = 0;
-
-
+coSto.cart = {};
 // array items represent: 
 //      supply, 
 //      price,
 //      baseline supply (doesn't change, used to recalculate totals)
 //      full name
-// change the arrays to objs to their properties can be called by their names instead of array locations TODO
+// (I now know this data would be better represented as an array of objects! Will not repeat this structure in the future!)
 coSto.inventory = {
     mask: [
         100,
@@ -33,16 +30,13 @@ coSto.inventory = {
     ]
 };
 
-coSto.cart = {};
-
 coSto.updateNavDisplay = function() {
     // update the individual inventory in NAV
     coSto.spanToChange = `span.${coSto.selectedItemName}`;
-    console.log(`coSto.spanToChange is`, coSto.spanToChange);
     $(coSto.spanToChange).text(`${coSto.newInventoryNumber}`);
     // update the current-cart-total-items in NAV
     $('.current-cart-total-items').text(coSto.itemsInCart);
-    // update the current-cart-total-cost in NAV TODO
+    // update the current-cart-total-cost in NAV 
     $('.current-cart-total-cost').text(`$${coSto.preTaxTotal}`);
 }
 
@@ -52,17 +46,15 @@ coSto.updateQuantityField = function() {
 }
 
 coSto.itemAdder = function() {
-    // ADDS TO the cart object according to quantity (only good for 'Add to cart' & '+' -- not 'quantity field')
+    // if no such item already in cart object, creates a property with name & value 
     if (coSto.cart[coSto.selectedItemName]) {
         coSto.cart[coSto.selectedItemName] += 1;
     } else {
         coSto.cart[coSto.selectedItemName] = 1;
     }
-    // change the inventory object according to quantity (only good for 'Add to cart' & '+', not 'quantity field')
+    // change the inventory value
     coSto.inventory[coSto.selectedItemName][0] -= 1;
     coSto.newInventoryNumber = coSto.inventory[coSto.selectedItemName][0];
-    // log the new inventory
-    console.log(coSto.newInventoryNumber);
 }
 
 coSto.itemSubber = function () {
@@ -71,22 +63,19 @@ coSto.itemSubber = function () {
     // change the inventory
     coSto.inventory[coSto.selectedItemName][0] += 1;
     coSto.newInventoryNumber = coSto.inventory[coSto.selectedItemName][0];
-    // log the new inventory
-    console.log(coSto.newInventoryNumber);
 }
 
 coSto.absoluteQuantUpdate = function(quant) {
-    console.log({quant});
-    // if quan-t is a non-number, change to 1
-    // probably dont want this actually lol TODO
+    // error handling:
     if (isNaN(quant) === false && quant !== '' && quant > 0) { 
         // CHANGE CART INFO
         coSto.cart[coSto.selectedItemName] = coSto.itemQty;
-        // CHANGE INVENTORY INFO by referencing its initial value which never change (item 2 in array)
+        // CHANGE INVENTORY INFO by referencing its initial value which never changes
         coSto.inventory[coSto.selectedItemName][0] = coSto.inventory[coSto.selectedItemName][2] - coSto.itemQty;
         // update inventory
         coSto.newInventoryNumber = coSto.inventory[coSto.selectedItemName][0];
     } else {
+        // if user hasn't inputted a positive number, the quantity input field resets to its current value
         coSto.updateQuantityField();
     };
 }
@@ -100,7 +89,6 @@ coSto.totaler = function() {
         let quantity = coSto.cart[i]
         let price = coSto.inventory[i][1];
         let totalItemPrice = price * quantity;
-        console.log(`i = ${i}, quantity = ${quantity}, totalItemPrice = $${totalItemPrice} (@ $${price}-per-item)`);
         // add each item's quantity-adjusted price to total before tax
         coSto.preTaxTotal += totalItemPrice;
         // add up the total items in cart
@@ -113,9 +101,7 @@ coSto.totaler = function() {
     if (coSto.postTaxTotal > 0) {
         coSto.totalWithShipping = (parseFloat(coSto.postTaxTotal) + 10).toFixed(2);
     }
-
     // undo button display change if items in cart drops back below 1 
-    // if (coSto.itemsInCart < 1) {
     if (coSto.cart[coSto.selectedItemName] < 1) {
         // hide quantity box
         let qtyBoxToChange = `.edit-quantity.${coSto.selectedItemName}`;
@@ -124,9 +110,7 @@ coSto.totaler = function() {
         let addToCartButtonToChange = `.order-form.${coSto.selectedItemName}`;
         $(addToCartButtonToChange).css("display", "block");
     }
-
 }
-
 
 coSto.addToCartListener = function() {
     $('.order-form').on('click', function (e) {
@@ -134,14 +118,10 @@ coSto.addToCartListener = function() {
         // put button ID into item Name variable
         coSto.selectedItemName = $(this).find('.add-to-cart').val();
         coSto.itemAdder();
-        // CALL TOTALER FUNCTION 
         coSto.totaler();
-        // update nav display
         coSto.updateNavDisplay();
-        // update quantity field
         coSto.updateQuantityField();
-
-        // display quantity box
+        // CHANGE DISPLAY FROM 'ADD TO CART' BUTTON TO '[-] [1] [+]'
         let qtyBoxToChange = `.edit-quantity.${coSto.selectedItemName}`;
         $(qtyBoxToChange).css("display", "flex");
         // hide the 'Add to Cart' button
@@ -155,11 +135,8 @@ coSto.minusFormListener = function () {
         // put button ID into item Name variable
         coSto.selectedItemName = $(this).val();
         coSto.itemSubber();
-        // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
         coSto.totaler();
-        // update nav display
         coSto.updateNavDisplay();
-        // update quantity field
         coSto.updateQuantityField();
     });
 };
@@ -169,27 +146,19 @@ coSto.addFormListener = function () {
         // put button ID into item Name variable
         coSto.selectedItemName = $(this).val();
         coSto.itemAdder();
-        // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
         coSto.totaler();
-        // update nav display
         coSto.updateNavDisplay();
-        // update quantity field
         coSto.updateQuantityField();
     });
 };
 coSto.quantityFieldListener = function () {
     $('.quantity-form').on('submit', function (e) {
         e.preventDefault();
-        // put quantity from text field into item Qty variable TODO
+        // put quantity from text field into item Qty variable 
         coSto.itemQty = parseInt($(this).find('#quantity').val());
-        console.log(`coSto.itemQty is `, coSto.itemQty);
         coSto.selectedItemName = $(this).find('#quantity').attr('class');
         coSto.absoluteQuantUpdate(coSto.itemQty);
-        // log the new inventory
-        console.log(coSto.newInventoryNumber);
-        // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
         coSto.totaler();
-        // update nav display
         coSto.updateNavDisplay();
     });
 };
@@ -197,13 +166,11 @@ coSto.quantityFieldListener = function () {
 coSto.checkOutListener = function() {
     $('button.check-out').on('click', function (e) {
         e.preventDefault();
-        console.log(`Check Out button pressed`);
         // add up all purchased items 
         for (i in coSto.cart) {
             let quantity = coSto.cart[i]
             let price = coSto.inventory[i][1];
             let totalItemPrice = price * quantity;
-            console.log(`i = ${i}, quantity = ${quantity}, totalItemPrice = $${totalItemPrice} (@ $${price}-per-item)`);
             if (quantity > 0) {
                 $('.cartDisplay').append(`
                     <li>${quantity}</li>
@@ -212,12 +179,9 @@ coSto.checkOutListener = function() {
                 `);
             }
         }
-
-        // CALL TOTALER FUNCTION TO ADD UP ALL TOTALS
+        // CHANGE TOTALS 
         coSto.totaler();
-
-        // CALCULATE AND PRINT TOTALS -- THESE SHOULD BE SEPARATED so 'current total' can be displayed in nav on the fly TODO
-        console.log(coSto.preTaxTotal);
+        // PRINT TOTALS 
         $('.totalsSection').append(`
             <li></li>
             <li>Total: </li>
@@ -235,49 +199,38 @@ coSto.checkOutListener = function() {
             <li><strong>Total with shipping: </strong></li>
             <li><strong>$${coSto.totalWithShipping}</strong></li>
         `);
-
         // animate/navigate to checkout section
         $('.store').animate({ height: '0' }, 0);
         $('.checkout').animate({ height: '100%' }, 0);
-
-
         $('body').animate({
             scrollTop: $(".checkout").offset().top
         }, 0);
-
     });
 }
 
 coSto.editOrderListener = function () {
     $('button.edit-order').on('click', function (e) {
         e.preventDefault();
-
         $('.cartDisplay').empty();
         $('.totalsSection').empty();
-
-        console.log(`Edit Order button pressed`);
         // animate/navigate back to store section
         $('.store').animate({ height: '120%' }, 0);
         $('.checkout').animate({ height: '0' }, 0);
-
         $('body').animate({
             scrollTop: $(".store").offset().top
         }, 0);
     });
 }
 
-
 coSto.init = function () {
     coSto.addToCartListener();
     coSto.minusFormListener();
     coSto.addFormListener();
     coSto.quantityFieldListener();
-
     coSto.checkOutListener();
     coSto.editOrderListener();
 }
 
 $(function () {
     coSto.init();
-    // console.log(coSto.inventory);
 });

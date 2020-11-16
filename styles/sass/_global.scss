@@ -47,7 +47,6 @@ header {
             display: grid;
             place-items: center start;
             grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
-            // margin-left: -12px;
             img {
                 height: 48px;
             }
@@ -85,13 +84,9 @@ header {
 // store styles
 
 .store {
-    // position: absolute;
-    // top: 1;
     background-color: $baby-powder;
-    // height: auto;
     overflow: hidden;
     text-align: center;
-    // margin-top: 85px;
     h2 {
         margin-top: 0;
     }
@@ -106,14 +101,11 @@ header {
         p {
             margin: 0;
         }
-        // li {
-        // }
         li .item-desc {
             padding: 10px;
         }
         li img {
             height: 220px;
-            // max-height: 8vh;
             box-shadow: 6px 6px $primary-accent;
         }
         form button.add-to-cart {
@@ -132,15 +124,10 @@ ul.edit-quantity {
     display: flex;
     padding-left: 0;
     margin: 15px auto;
-
-    // margin: 15px;
-    // padding: 10px 20px;
-
     justify-content: space-between;
     list-style: none;
     text-align: center;
     width: 170px;
-    // border: 1px solid #000;
     display: none;
     #quantity {
         width: 35px;
@@ -151,7 +138,6 @@ ul.edit-quantity {
 }
 
 button.subtract {
-    // background-color: rgb(204, 200, 200);
     background-color: $very-light-gray;
 };
 button.add {
@@ -161,19 +147,10 @@ button.add {
 
 button.subtract,
 button.add {
-    // margin: 15px;
     border: 1px solid $lining;
     padding: 10px 20px;
     border-radius: 5px;
 }
-
-// .store ul li:first-of-type img,
-// .store ul li:last-of-type img, {
-//     height: 150px;
-// }
-// .store ul li:nth-of-type(2) img {
-//     height: 250px;
-// }
 
 select {
     display: none;
@@ -186,14 +163,10 @@ select {
     height: 0;
     overflow: hidden;
     .checkout-box {
-        // display: grid;
-        // grid-template-columns: 2fr 1fr;
-        // column-gap: 5vw;
         display: flex;
         justify-content: space-between;
         width: 100%;
         .order-table {
-            // box-shadow: 1px 1px 1px $rich-black-fogra-29;
             background-color: $very-very-light-gray;
             padding: 1px;
             ul {
@@ -202,7 +175,6 @@ select {
                 list-style: none;
                 padding: 10px;
                 margin: 10px;
-                // border: 1px solid black;
             }
         }
         button.edit-order {
@@ -222,7 +194,6 @@ select {
         }
         .order-info figure {
             border: 3px dashed $very-light-gray;
-            // box-shadow: 1px 1px 1px $rich-black-fogra-29;
             padding: 32px;
             margin: 0 0 0 16px;
             width: 200px;
@@ -230,9 +201,6 @@ select {
         figure.address p {
             margin: 0;
         }
-        // figure.address p:last-of-type {
-        //     margin-bottom: 16px;
-        // }
         .order-info button.address, 
         .order-info button.credit {
             margin: 30px 0px 0px;
