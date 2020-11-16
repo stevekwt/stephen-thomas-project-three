@@ -46,15 +46,22 @@ coSto.updateQuantityField = function() {
 }
 
 coSto.itemAdder = function() {
-    // if no such item already in cart object, creates a property with name & value 
-    if (coSto.cart[coSto.selectedItemName]) {
-        coSto.cart[coSto.selectedItemName] += 1;
+    // if inventory limit is already reached
+    if (coSto.cart[coSto.selectedItemName] >= coSto.inventory[coSto.selectedItemName][2]) {
+        alert(`Sorry, that's as many as we have!`);
     } else {
-        coSto.cart[coSto.selectedItemName] = 1;
+        // CHANGE VALUES...
+        if (coSto.cart[coSto.selectedItemName]) {
+        // if an item for this product is already in cart object, increments its value 
+            coSto.cart[coSto.selectedItemName] += 1;
+        } else {
+            // if no such item already in cart object, creates a property with name & value 
+            coSto.cart[coSto.selectedItemName] = 1;
+        }
+        // change the inventory value
+        coSto.inventory[coSto.selectedItemName][0] -= 1;
+        coSto.newInventoryNumber = coSto.inventory[coSto.selectedItemName][0];
     }
-    // change the inventory value
-    coSto.inventory[coSto.selectedItemName][0] -= 1;
-    coSto.newInventoryNumber = coSto.inventory[coSto.selectedItemName][0];
 }
 
 coSto.itemSubber = function () {
@@ -67,7 +74,11 @@ coSto.itemSubber = function () {
 
 coSto.absoluteQuantUpdate = function(quant) {
     // error handling:
-    if (isNaN(quant) === false && quant !== '' && quant > 0) { 
+    if (quant > coSto.inventory[coSto.selectedItemName][2]) {
+            // if they try to order more than we have of this item
+            alert(`Sorry, that's more than we have. Try ordering fewer!`);
+            coSto.updateQuantityField();
+    } else if (isNaN(quant) === false && quant !== '' && quant > -1) { 
         // CHANGE CART INFO
         coSto.cart[coSto.selectedItemName] = coSto.itemQty;
         // CHANGE INVENTORY INFO by referencing its initial value which never changes
